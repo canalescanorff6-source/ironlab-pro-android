@@ -75,12 +75,12 @@ class SpotifyLinks(private val activity: ComponentActivity) {
         }
         val title = EditText(activity).apply {
             hint = "Nome: Playlist de treino"
-            isSingleLine = true
+            setSingleLine(true)
         }
         val link = EditText(activity).apply {
             hint = "https://open.spotify.com/playlist/..."
             setText(providedLink)
-            isSingleLine = false
+            setSingleLine(false)
             maxLines = 3
         }
         fields.addView(title)
