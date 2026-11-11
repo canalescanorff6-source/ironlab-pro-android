@@ -1,0 +1,79 @@
+name: IRONLAB Android - Compilar APK
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Verificar e compilar Android
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Validar projeto Android
+        run: python3 tests/validate_project.py
+      - uses: android-actions/setup-android@v3
+      - name: Instalar SDK Android
+        run: sdkmanager --install "platforms;android-36" "build-tools;36.0.0"
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.13'
+      - name: Compilar APK debug
+        run: gradle --no-daemon :app:assembleDebug
+      - name: Publicar APK debug como artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: IRONLAB-PRO-1.1.0-debug-APK
+          path: app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Configurar assinatura release privada (opcional)
+        id: signing
+        shell: bash
+        env:
+          KEYSTORE_BASE64: ${{ secrets.IRONLAB_KEYSTORE_BASE64 }}
+          STORE_PASSWORD: ${{ secrets.IRONLAB_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.IRONLAB_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.IRONLAB_KEY_PASSWORD }}
+        run: |
+          if [[ -n "$KEYSTORE_BASE64" && -n "$STORE_PASSWORD" && -n "$KEY_ALIAS" && -n "$KEY_PASSWORD" ]]; then
+            printf '%s' "$KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/ironlab-release.jks"
+            chmod 600 "$RUNNER_TEMP/ironlab-release.jks"
+            echo "IRONLAB_KEYSTORE_FILE=$RUNNER_TEMP/ironlab-release.jks" >> "$GITHUB_ENV"
+            echo "IRONLAB_KEYSTORE_PASSWORD=$STORE_PASSWORD" >> "$GITHUB_ENV"
+            echo "IRONLAB_KEY_ALIAS=$KEY_ALIAS" >> "$GITHUB_ENV"
+            echo "IRONLAB_KEY_PASSWORD=$KEY_PASSWORD" >> "$GITHUB_ENV"
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Compilar release assinado para atualizações futuras
+        if: steps.signing.outputs.enabled == 'true'
+        run: gradle --no-daemon :app:assembleRelease
+      - name: Publicar APK release assinado
+        if: steps.signing.outputs.enabled == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: IRONLAB-PRO-1.1.0-release-signed-APK
+          path: app/build/outputs/apk/release/app-release.apk
+          if-no-files-found: error
+          retention-days: 30
+      - name: Gerar checksums do APK
+        if: always()
+        shell: bash
+        run: |
+          if [[ -f app/build/outputs/apk/debug/app-debug.apk ]]; then
+            sha256sum app/build/outputs/apk/debug/app-debug.apk
+          fi
+          if [[ -f app/build/outputs/apk/release/app-release.apk ]]; then
+            sha256sum app/build/outputs/apk/release/app-release.apk
+          fi

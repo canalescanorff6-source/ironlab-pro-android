@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/ink">
+
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingStart="19dp" android:paddingEnd="19dp"
+        android:paddingTop="15dp" android:paddingBottom="12dp"
+        android:orientation="horizontal">
+        <TextView android:layout_width="44dp" android:layout_height="44dp"
+            android:gravity="center" android:text="◈" android:textSize="29sp"
+            android:textColor="@color/ink" android:background="@drawable/bg_button"/>
+        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+            android:layout_weight="1" android:layout_marginStart="11dp" android:orientation="vertical">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="IRONLAB PRO" android:textColor="@color/white"
+                android:textStyle="bold" android:textSize="22sp" android:fontFamily="sans-serif-condensed"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="ELITE MUSIC + FITNESS SYSTEM" android:textColor="@color/mint"
+                android:textSize="9sp" android:letterSpacing="0.13"/>
+        </LinearLayout>
+        <TextView android:id="@+id/headerBadge" android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="OFFLINE AUDIO" android:textSize="9sp" android:textStyle="bold"
+            android:padding="9dp" android:background="@drawable/bg_outline" android:textColor="@color/mint"/>
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="52dp"
+        android:paddingStart="16dp" android:paddingEnd="16dp" android:paddingBottom="6dp" android:orientation="horizontal">
+        <Button android:id="@+id/musicTab" android:layout_width="0dp" android:layout_height="match_parent"
+            android:layout_weight="1" android:text="♫  MINHAS MÚSICAS" android:textSize="11sp"
+            android:textAllCaps="false" android:textStyle="bold" android:backgroundTint="@color/mint" android:textColor="@color/ink"/>
+        <Button android:id="@+id/trainingTab" android:layout_width="0dp" android:layout_height="match_parent"
+            android:layout_weight="1" android:layout_marginStart="8dp" android:text="◈  MEUS TREINOS"
+            android:textSize="11sp" android:textAllCaps="false" android:textStyle="bold"
+            android:backgroundTint="@color/surface_alt" android:textColor="@color/white"/>
+    </LinearLayout>
+
+    <ScrollView android:id="@+id/musicPage" android:layout_width="match_parent"
+        android:layout_height="0dp" android:layout_weight="1" android:fillViewport="true">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="vertical" android:padding="16dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:padding="19dp" android:background="@drawable/bg_card" android:orientation="vertical">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="MUSIC ENGINE  ·  100% ARQUIVOS LOCAIS" android:textSize="9sp"
+                    android:textStyle="bold" android:letterSpacing="0.13" android:textColor="@color/mint"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="TREINE FORTE.\nOUÇA LIVRE." android:layout_marginTop="9dp"
+                    android:textSize="39sp" android:lineSpacingExtra="-6dp" android:fontFamily="sans-serif-condensed"
+                    android:textStyle="bold" android:textColor="@color/white"/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="Suas músicas inteiras, sem anúncios do IRONLAB. Controle pelo fone, pela tela bloqueada e pela notificação do Android."
+                    android:textSize="11sp" android:layout_marginTop="10dp" android:lineSpacingExtra="4dp"
+                    android:textColor="@color/muted"/>
+                <Button android:id="@+id/importBtn" android:layout_width="match_parent" android:layout_height="49dp"
+                    android:layout_marginTop="19dp" android:text="＋  IMPORTAR MÚSICAS DO CELULAR"
+                    android:textAllCaps="false" android:textSize="12sp" android:textStyle="bold"
+                    android:backgroundTint="@color/mint" android:textColor="@color/ink"/>
+                <Button android:id="@+id/catalogBtn" android:layout_width="match_parent"
+                    android:layout_height="47dp" android:layout_marginTop="9dp"
+                    android:text="⌕  BUSCAR MÚSICAS EM SERVIÇOS OFICIAIS"
+                    android:textAllCaps="false" android:textSize="11sp" android:textStyle="bold"
+                    android:backgroundTint="@color/surface_alt" android:textColor="@color/white"/>
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="11dp" android:orientation="horizontal">
+                <TextView android:id="@+id/songCount" android:layout_width="0dp" android:layout_height="62dp"
+                    android:layout_weight="1" android:gravity="center" android:background="@drawable/bg_card"
+                    android:text="0 MÚSICAS" android:textSize="12sp" android:textStyle="bold" android:textColor="@color/white"/>
+                <TextView android:id="@+id/playlistCount" android:layout_width="0dp" android:layout_height="62dp"
+                    android:layout_weight="1" android:layout_marginStart="8dp" android:gravity="center"
+                    android:background="@drawable/bg_card" android:text="1 PLAYLIST" android:textStyle="bold"
+                    android:textSize="12sp" android:textColor="@color/mint"/>
+            </LinearLayout>
+
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="22dp" android:text="SUA BIBLIOTECA" android:textStyle="bold"
+                android:fontFamily="sans-serif-condensed" android:textSize="24sp" android:textColor="@color/white"/>
+            <EditText android:id="@+id/searchInput" android:layout_width="match_parent" android:layout_height="50dp"
+                android:layout_marginTop="8dp" android:background="@drawable/bg_card" android:padding="13dp"
+                android:hint="⌕  Pesquisar nos arquivos importados..." android:singleLine="true"
+                android:inputType="text" android:textSize="12sp" android:textColor="@color/white"
+                android:textColorHint="@color/muted"/>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="8dp" android:orientation="horizontal">
+                <Button android:id="@+id/allSongsBtn" android:layout_width="0dp" android:layout_height="44dp" android:layout_weight="1"
+                    android:text="TODAS" android:textSize="10sp" android:textColor="@color/white" android:backgroundTint="@color/surface_alt"/>
+                <Button android:id="@+id/favoritesBtn" android:layout_width="0dp" android:layout_height="44dp" android:layout_weight="1"
+                    android:layout_marginStart="6dp" android:text="♥ FAVORITAS" android:textSize="10sp"
+                    android:textColor="@color/white" android:backgroundTint="@color/surface_alt"/>
+                <Button android:id="@+id/playlistBtn" android:layout_width="0dp" android:layout_height="44dp" android:layout_weight="1"
+                    android:layout_marginStart="6dp" android:text="PLAYLISTS" android:textSize="10sp"
+                    android:textColor="@color/white" android:backgroundTint="@color/surface_alt"/>
+            </LinearLayout>
+            <LinearLayout android:id="@+id/songList" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="9dp" android:orientation="vertical"/>
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="20dp" android:paddingBottom="6dp" android:textSize="10sp"
+                android:lineSpacingExtra="4dp" android:textColor="@color/muted"
+                android:text="Só reproduz arquivos de áudio que você já possui. Para músicas comerciais populares sem anúncios, um serviço licenciado pode exigir assinatura. O IRONLAB não faz download nem remove publicidade de plataformas de terceiros."/>
+        </LinearLayout>
+    </ScrollView>
+
+    <FrameLayout android:id="@+id/trainingPage" android:layout_width="match_parent" android:layout_height="0dp"
+        android:layout_weight="1" android:visibility="gone"/>
+
+    <LinearLayout android:id="@+id/playerPanel" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:background="@drawable/bg_card" android:padding="12dp" android:orientation="vertical">
+        <TextView android:id="@+id/nowTitle" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="NENHUMA MÚSICA SELECIONADA" android:singleLine="true" android:ellipsize="end"
+            android:textSize="13sp" android:textStyle="bold" android:textColor="@color/white"/>
+        <TextView android:id="@+id/nowArtist" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="Importe arquivos para começar." android:textSize="10sp" android:singleLine="true"
+            android:ellipsize="end" android:textColor="@color/muted"/>
+        <SeekBar android:id="@+id/seek" android:layout_width="match_parent" android:layout_height="29dp"
+            android:progressTint="@color/mint" android:thumbTint="@color/mint"/>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:gravity="center_vertical" android:orientation="horizontal">
+            <TextView android:id="@+id/currentTime" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="00:00" android:textSize="10sp" android:textColor="@color/muted"/>
+            <Space android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1"/>
+            <Button android:id="@+id/shuffleBtn" android:layout_width="47dp" android:layout_height="43dp" android:text="⇄"
+                android:textSize="21sp" android:textColor="@color/white" android:backgroundTint="@color/surface_alt"/>
+            <Button android:id="@+id/previousBtn" android:layout_width="49dp" android:layout_height="43dp" android:text="⏮"
+                android:textColor="@color/white" android:backgroundTint="@color/surface_alt"/>
+            <Button android:id="@+id/playBtn" android:layout_width="56dp" android:layout_height="48dp" android:text="▶"
+                android:textSize="18sp" android:textColor="@color/ink" android:backgroundTint="@color/mint"/>
+            <Button android:id="@+id/nextBtn" android:layout_width="49dp" android:layout_height="43dp" android:text="⏭"
+                android:textColor="@color/white" android:backgroundTint="@color/surface_alt"/>
+            <Button android:id="@+id/repeatBtn" android:layout_width="47dp" android:layout_height="43dp" android:text="↻"
+                android:textSize="21sp" android:textColor="@color/white" android:backgroundTint="@color/surface_alt"/>
+            <Space android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1"/>
+            <TextView android:id="@+id/totalTime" android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="00:00" android:textSize="10sp" android:textColor="@color/muted"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
