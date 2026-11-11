@@ -1,6 +1,18 @@
-# IRONLAB PRO — Android nativo (versão inicial 1.1.0)
+# IRONLAB PRO — Android nativo (versão beta 1.2.0)
 
 Aplicativo Android em **Kotlin + AndroidX Media3**, com reprodução de arquivos pessoais completos em segundo plano e acesso à versão web atual do IRONLAB PRO.
+
+## Novidades da versão 1.2.0
+
+- **Treinos:** a aba nativa abre diretamente `#treinos`; ao escolher Superior A/B ou Inferior A/B, a página rola para o treino correspondente, preservando a posição ao abrir exercícios.
+- **Spotify:** botão para abrir **Minhas Músicas Curtidas** no aplicativo/site oficial, além de cadastrar, abrir, copiar e remover links de playlists e faixas.
+- **Compartilhar:** no Spotify, use **Compartilhar → IRONLAB PRO** (se o app aparecer) para guardar links com confirmação; nenhum dado de login é armazenado.
+- **Versão gratuita:** a conexão de dados via Spotify Web API foi deliberadamente evitada. As novas regras para apps em desenvolvimento requerem proprietário Premium. Não há download de músicas comerciais nem bloqueio de anúncios de terceiros.
+- **APK beta:** GitHub Actions compila e publica um link de download em `Releases`.
+
+**Download beta:** https://github.com/canalescanorff6-source/ironlab-pro-android/releases/tag/v1.2.0-beta
+
+**Atenção às atualizações:** este é um APK `debug`. A assinatura de debug gerada pelo GitHub Actions pode variar entre execuções e impedir instalar por cima de versões anteriores. Não desinstale uma versão que contém dados importantes sem fazer backup. A solução definitiva é configurar os segredos de assinatura privada de release documentados em `BUILD_APK.md`.
 
 ## O que está implementado
 
