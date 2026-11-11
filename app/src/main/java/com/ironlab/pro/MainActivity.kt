@@ -127,8 +127,9 @@ class MainActivity : ComponentActivity() {
         spotifyLinks.receiveShared(intent, ::refreshSpotifyLinks)
         binding.musicTab.setOnClickListener { switchScreen("music") }
         binding.trainingTab.setOnClickListener { switchScreen("training") }
+        binding.nutritionTab.setOnClickListener { switchScreen("nutrition") }
         binding.headerBadge.setOnClickListener {
-            if (currentScreen == "training") openInBrowser() else toast("Player offline • sem anúncios do IRONLAB")
+            if (currentScreen != "music") openInBrowser() else toast("Player offline • sem anúncios do IRONLAB")
         }
         binding.allSongsBtn.setOnClickListener { viewMode = "all"; refreshList() }
         binding.favoritesBtn.setOnClickListener { viewMode = "favorites"; refreshList() }
@@ -230,16 +231,28 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun switchScreen(screen: String) {
+        val previous = currentScreen
         currentScreen = screen
         val music = screen == "music"
         binding.musicPage.visibility = if (music) View.VISIBLE else View.GONE
         binding.trainingPage.visibility = if (music) View.GONE else View.VISIBLE
-        binding.musicTab.backgroundTintList = ColorStateList.valueOf(if (music) mint else Color.rgb(28, 52, 63))
-        binding.trainingTab.backgroundTintList = ColorStateList.valueOf(if (music) Color.rgb(28, 52, 63) else mint)
-        binding.musicTab.setTextColor(if (music) ink else white)
-        binding.trainingTab.setTextColor(if (music) white else ink)
+        val tabs = listOf(
+            binding.musicTab to "music",
+            binding.trainingTab to "training",
+            binding.nutritionTab to "nutrition"
+        )
+        for ((button, name) in tabs) {
+            val selected = screen == name
+            button.backgroundTintList = ColorStateList.valueOf(if (selected) mint else Color.rgb(28, 52, 63))
+            button.setTextColor(if (selected) ink else white)
+        }
         binding.headerBadge.text = if (music) "OFFLINE AUDIO" else "ABRIR CHROME ↗"
-        if (!music) ensureWebView()
+        if (!music) {
+            ensureWebView()
+            if (previous != screen) {
+                webView?.loadUrl(site + if (screen == "nutrition") "#nutricao" else "#treinos")
+            }
+        }
     }
 
     /** External discovery only. Playback rights and ads remain with each official provider. */
@@ -284,7 +297,7 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun openInBrowser() {
-        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(site + "#treinos")))
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(site + if (currentScreen == "nutrition") "#nutricao" else "#treinos")))
     }
 
     private fun ensureWebView() {
