@@ -20,7 +20,12 @@ jobs:
           java-version: '17'
       - name: Validar projeto Android
         run: python3 tests/validate_project.py
-      - uses: android-actions/setup-android@v3
+      # GitHub ubuntu-latest already includes Android command-line tools.
+      # The third-party setup action currently fails attempting obsolete SDK package 'tools'.
+      - name: Aceitar licenças Android SDK
+        shell: bash
+        run: |
+          yes | sdkmanager --licenses > /dev/null || true
       - name: Instalar SDK Android
         run: sdkmanager --install "platforms;android-36" "build-tools;36.0.0"
       - uses: gradle/actions/setup-gradle@v4
