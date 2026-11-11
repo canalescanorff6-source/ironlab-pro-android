@@ -34,11 +34,15 @@
     <LinearLayout android:layout_width="match_parent" android:layout_height="52dp"
         android:paddingStart="16dp" android:paddingEnd="16dp" android:paddingBottom="6dp" android:orientation="horizontal">
         <Button android:id="@+id/musicTab" android:layout_width="0dp" android:layout_height="match_parent"
-            android:layout_weight="1" android:text="♫  MINHAS MÚSICAS" android:textSize="11sp"
+            android:layout_weight="1" android:text="♫  MÚSICAS" android:textSize="10sp"
             android:textAllCaps="false" android:textStyle="bold" android:backgroundTint="@color/mint" android:textColor="@color/ink"/>
         <Button android:id="@+id/trainingTab" android:layout_width="0dp" android:layout_height="match_parent"
-            android:layout_weight="1" android:layout_marginStart="8dp" android:text="◈  MEUS TREINOS"
-            android:textSize="11sp" android:textAllCaps="false" android:textStyle="bold"
+            android:layout_weight="1" android:layout_marginStart="5dp" android:text="◈  TREINOS"
+            android:textSize="10sp" android:textAllCaps="false" android:textStyle="bold"
+            android:backgroundTint="@color/surface_alt" android:textColor="@color/white"/>
+        <Button android:id="@+id/nutritionTab" android:layout_width="0dp" android:layout_height="match_parent"
+            android:layout_weight="1" android:layout_marginStart="5dp" android:text="◉  MASS COACH"
+            android:textSize="9sp" android:textAllCaps="false" android:textStyle="bold"
             android:backgroundTint="@color/surface_alt" android:textColor="@color/white"/>
     </LinearLayout>
 
