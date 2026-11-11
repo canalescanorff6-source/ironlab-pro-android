@@ -47,6 +47,9 @@ assert 'browser.loadUrl(site + "#treinos")' in activity
 assert 'SpotifyLinks(this)' in activity
 assert 'spotifyLikedBtn' in layout and 'spotifySaveLinkBtn' in layout
 assert 'spotifySavedLinks' in layout
+assert 'nutritionTab' in activity and 'nutritionTab' in layout
+assert '"#nutricao"' in activity
+assert 'MASS COACH' in layout
 assert 'android.intent.action.SEND' in manifest
 spotify_links = (SRC / 'java/com/ironlab/pro/SpotifyLinks.kt').read_text()
 assert 'https://open.spotify.com/collection/tracks' in spotify_links
@@ -69,7 +72,7 @@ assert not missing_ids, f'Missing IDs in activity_main.xml: {sorted(missing_ids)
 
 assert 'media3-session:1.11.1' in gradle and 'media3-exoplayer:1.11.1' in gradle
 assert 'namespace = "com.ironlab.pro"' in gradle
-assert 'versionCode = 3' in gradle and 'versionName = "1.2.0"' in gradle
+assert 'versionCode = 4' in gradle and 'versionName = "1.3.0"' in gradle
 assert 'IRONLAB_KEYSTORE_FILE' in gradle and 'ironlabRelease' in gradle
 assert 'gradle --no-daemon :app:assembleDebug' in workflow
 assert 'gradle --no-daemon :app:assembleRelease' in workflow
