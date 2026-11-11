@@ -49,6 +49,7 @@ import kotlin.math.max
 class MainActivity : ComponentActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var library: MusicLibrary
+    private val spotifyLinks by lazy { SpotifyLinks(this) }
     private val worker = Executors.newSingleThreadExecutor()
     private val uiHandler = Handler(Looper.getMainLooper())
     private var controllerFuture: ListenableFuture<MediaController>? = null
@@ -120,6 +121,10 @@ class MainActivity : ComponentActivity() {
 
         binding.importBtn.setOnClickListener { pickSongs.launch(arrayOf("audio/*")) }
         binding.catalogBtn.setOnClickListener { openOfficialCatalogSearch() }
+        binding.spotifyLikedBtn.setOnClickListener { spotifyLinks.openLiked() }
+        binding.spotifySaveLinkBtn.setOnClickListener { spotifyLinks.addDialog(::refreshSpotifyLinks) }
+        refreshSpotifyLinks()
+        spotifyLinks.receiveShared(intent, ::refreshSpotifyLinks)
         binding.musicTab.setOnClickListener { switchScreen("music") }
         binding.trainingTab.setOnClickListener { switchScreen("training") }
         binding.headerBadge.setOnClickListener {
@@ -174,6 +179,16 @@ class MainActivity : ComponentActivity() {
             }
         })
         refreshList()
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        if (::binding.isInitialized) spotifyLinks.receiveShared(intent, ::refreshSpotifyLinks)
+    }
+
+    private fun refreshSpotifyLinks() {
+        spotifyLinks.render(binding.spotifySavedLinks, ::refreshSpotifyLinks)
     }
 
     override fun onStart() {
@@ -269,7 +284,7 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun openInBrowser() {
-        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(site)))
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(site + "#treinos")))
     }
 
     private fun ensureWebView() {
@@ -317,7 +332,7 @@ class MainActivity : ComponentActivity() {
         binding.trainingPage.addView(browser, ViewGroup.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
         ))
-        browser.loadUrl(site)
+        browser.loadUrl(site + "#treinos")
         toast("Seus dados salvos no Chrome podem não aparecer no WebView. Use ABRIR CHROME para a sessão original.")
     }
 
