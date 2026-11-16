@@ -54,7 +54,7 @@ assert 'spotifyLikedBtn' in layout and 'spotifySaveLinkBtn' in layout
 assert 'spotifySavedLinks' in layout
 assert 'nutritionTab' in activity and 'nutritionTab' in layout
 assert '"#nutricao"' in activity
-assert 'MASS COACH' in layout
+assert 'NUTRIÇÃO' in layout
 assert 'android.intent.action.SEND' in manifest
 spotify_links = (SRC / 'java/com/ironlab/pro/SpotifyLinks.kt').read_text()
 assert 'https://open.spotify.com/collection/tracks' in spotify_links
