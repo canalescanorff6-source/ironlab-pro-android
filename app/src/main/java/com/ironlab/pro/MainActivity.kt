@@ -128,6 +128,7 @@ class MainActivity : ComponentActivity() {
         binding.musicTab.setOnClickListener { switchScreen("music") }
         binding.trainingTab.setOnClickListener { switchScreen("training") }
         binding.nutritionTab.setOnClickListener { switchScreen("nutrition") }
+        binding.refreshSiteBtn.setOnClickListener { refreshFitnessSite() }
         binding.headerBadge.setOnClickListener {
             if (currentScreen != "music") openInBrowser() else toast("Player offline • sem anúncios do IRONLAB")
         }
@@ -246,7 +247,8 @@ class MainActivity : ComponentActivity() {
             button.backgroundTintList = ColorStateList.valueOf(if (selected) mint else Color.rgb(28, 52, 63))
             button.setTextColor(if (selected) ink else white)
         }
-        binding.headerBadge.text = if (music) "OFFLINE AUDIO" else "ABRIR CHROME ↗"
+        binding.headerBadge.text = if (music) "OFFLINE AUDIO" else "CHROME ↗"
+        binding.refreshSiteBtn.visibility = if (music) View.GONE else View.VISIBLE
         if (!music) {
             ensureWebView()
             if (previous != screen) {
@@ -300,6 +302,23 @@ class MainActivity : ComponentActivity() {
         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(site + if (currentScreen == "nutrition") "#nutricao" else "#treinos")))
     }
 
+    /**
+     * Recarrega apenas o conteúdo remoto de Treinos/Nutrição.
+     * Não limpa WebStorage, cookies, histórico de treino ou playlists locais.
+     * O código de exercícios e dieta é compartilhado com a versão online;
+     * o reprodutor de música continua 100% nativo (Media3).
+     */
+    private fun refreshFitnessSite() {
+        if (currentScreen == "music") return
+        val browser = webView
+        if (browser == null) {
+            ensureWebView()
+        } else {
+            browser.reload()
+        }
+        toast("Atualizando a versão online. Seus registros locais foram preservados.")
+    }
+
     private fun ensureWebView() {
         if (webView != null) return
         val browser = WebView(this)
@@ -307,6 +326,9 @@ class MainActivity : ComponentActivity() {
         browser.setBackgroundColor(ink)
         browser.settings.javaScriptEnabled = true
         browser.settings.domStorageEnabled = true
+        // Evita manter HTML/JS de versões anteriores após publicação do site.
+        // Não apagar cache/dados de WebStorage: isso poderia eliminar registros locais.
+        browser.settings.cacheMode = android.webkit.WebSettings.LOAD_NO_CACHE
         browser.settings.allowFileAccess = false
         browser.settings.allowContentAccess = false
         browser.settings.mixedContentMode = android.webkit.WebSettings.MIXED_CONTENT_NEVER_ALLOW
@@ -345,7 +367,7 @@ class MainActivity : ComponentActivity() {
         binding.trainingPage.addView(browser, ViewGroup.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
         ))
-        browser.loadUrl(site + "#treinos")
+        browser.loadUrl(site + if (currentScreen == "nutrition") "#nutricao" else "#treinos")
         toast("Seus dados salvos no Chrome podem não aparecer no WebView. Use ABRIR CHROME para a sessão original.")
     }
 

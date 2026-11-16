@@ -43,7 +43,12 @@ for token in ['takePersistableUriPermission', 'MediaController.Builder',
               'OpenMultipleDocuments', 'setMediaItems', 'favorites', 'playlists']:
     assert token in activity + library, f'Missing feature {token}'
 assert 'https://ironlab-pro-3r9500.v2.appdeploy.ai/' in activity
-assert 'browser.loadUrl(site + "#treinos")' in activity
+assert 'browser.loadUrl(site + if (currentScreen == "nutrition") "#nutricao" else "#treinos")' in activity
+assert 'browser.settings.cacheMode = android.webkit.WebSettings.LOAD_NO_CACHE' in activity
+assert 'private fun refreshFitnessSite()' in activity
+assert 'browser.reload()' in activity
+assert 'refreshSiteBtn' in activity and 'refreshSiteBtn' in layout
+assert 'clearCache(true)' not in activity and 'WebStorage.getInstance().deleteAllData()' not in activity
 assert 'SpotifyLinks(this)' in activity
 assert 'spotifyLikedBtn' in layout and 'spotifySaveLinkBtn' in layout
 assert 'spotifySavedLinks' in layout
@@ -72,7 +77,7 @@ assert not missing_ids, f'Missing IDs in activity_main.xml: {sorted(missing_ids)
 
 assert 'media3-session:1.11.1' in gradle and 'media3-exoplayer:1.11.1' in gradle
 assert 'namespace = "com.ironlab.pro"' in gradle
-assert 'versionCode = 4' in gradle and 'versionName = "1.3.0"' in gradle
+assert 'versionCode = 5' in gradle and 'versionName = "1.4.0"' in gradle
 assert 'IRONLAB_KEYSTORE_FILE' in gradle and 'ironlabRelease' in gradle
 assert 'gradle --no-daemon :app:assembleDebug' in workflow
 assert 'gradle --no-daemon :app:assembleRelease' in workflow

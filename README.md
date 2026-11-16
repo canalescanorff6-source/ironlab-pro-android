@@ -1,8 +1,16 @@
-# IRONLAB PRO — Android nativo (versão beta 1.3.0)
+# IRONLAB PRO — Android nativo (versão beta 1.4.0)
 
 Aplicativo Android em **Kotlin + AndroidX Media3**, com reprodução de arquivos pessoais completos em segundo plano e acesso à versão web atual do IRONLAB PRO.
 
-## Novidades da versão 1.2.0
+## Novidades da versão 1.4.0 — treinos e nutrição sincronizados por conteúdo
+
+- O app Android nativo mantém o player Media3 para músicas locais; **Treinos e Nutrição usam a versão online oficial do IRONLAB**, com as mesmas novidades no site e no APK quando há internet.
+- A aba **NUTRIÇÃO** abre `#nutricao`, incluindo avaliação com peso e altura reais, metas nutricionais, creatina, whey por scoop e calculadora do hipercalórico caseiro com alerta de lactose.
+- Um botão **↻** visível nas abas Treinos e Nutrição atualiza a página pela rede, evitando conteúdo antigo em cache sem excluir os dados do usuário.
+- Publicar novas funções no site **não atualiza o código Kotlin automaticamente**: as partes nativas exigem novo APK.
+- **Importante:** dados do Chrome e WebView ainda são separados, sem sincronização de histórico entre eles; faça backup antes de reinstalar e não desinstale por problemas de assinatura do APK debug.
+
+## Histórico de mudanças (1.2.0–1.3.0)
 
 - **Treinos:** a aba nativa abre diretamente `#treinos`; ao escolher Superior A/B ou Inferior A/B, a página rola para o treino correspondente, preservando a posição ao abrir exercícios.
 - **Spotify:** botão para abrir **Minhas Músicas Curtidas** no aplicativo/site oficial, além de cadastrar, abrir, copiar e remover links de playlists e faixas.
@@ -10,7 +18,7 @@ Aplicativo Android em **Kotlin + AndroidX Media3**, com reprodução de arquivos
 - **Versão gratuita:** a conexão de dados via Spotify Web API foi deliberadamente evitada. As novas regras para apps em desenvolvimento requerem proprietário Premium. Não há download de músicas comerciais nem bloqueio de anúncios de terceiros.
 - **APK beta:** GitHub Actions compila e publica um link de download em `Releases`.
 
-**Download beta:** https://github.com/canalescanorff6-source/ironlab-pro-android/releases/tag/v1.3.0-beta
+**Download beta:** https://github.com/canalescanorff6-source/ironlab-pro-android/releases/tag/v1.4.0-beta
 
 **Atenção às atualizações:** este é um APK `debug`. A assinatura de debug gerada pelo GitHub Actions pode variar entre execuções e impedir instalar por cima de versões anteriores. Não desinstale uma versão que contém dados importantes sem fazer backup. A solução definitiva é configurar os segredos de assinatura privada de release documentados em `BUILD_APK.md`.
 
@@ -29,7 +37,7 @@ Aplicativo Android em **Kotlin + AndroidX Media3**, com reprodução de arquivos
 - Visual dark premium e aba **Meus treinos** abrindo `https://ironlab-pro-3r9500.v2.appdeploy.ai/` em `WebView`.
 - Botão **ABRIR CHROME ↗** na aba Treinos para acessar a sessão original do site no navegador.
 - Pipeline `.github/workflows/build-debug-apk.yml` que roda validação estática, compila APK debug e, se as quatro variáveis secretas estiverem configuradas, também produz **APK release assinado com chave estável** para atualização sem perda de dados.
-- `versionCode = 2` e `versionName = 1.1.0`, preparado para o próximo ciclo de atualização.
+- `versionCode = 5` e `versionName = 1.4.0`, preparado para o próximo ciclo de atualização.
 
 ## O que não é possível prometer
 
@@ -89,4 +97,4 @@ A lista de músicas e playlists nativas ficam em SharedPreferences do próprio a
 - [Android Media3 — ExoPlayer](https://developer.android.com/media/implement/playback-app)
 - [Android ACTION_OPEN_DOCUMENT](https://developer.android.com/reference/android/content/Intent#ACTION_OPEN_DOCUMENT)
 
-**Status:** Versão **1.1.0** revisada e validada estaticamente (XML, permissões, vínculos da interface e pipeline de compilação). O APK ainda **não foi compilado nem testado em Android real** neste ambiente por falta do SDK Android/Gradle e conectividade externa do executor.
+**Status:** Versão **1.4.0** com pipeline GitHub Actions para validar e compilar. Uma execução bem-sucedida comprova a compilação, mas não substitui testes em dispositivo Android real.

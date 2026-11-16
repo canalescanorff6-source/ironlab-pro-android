@@ -26,6 +26,13 @@
                 android:text="ELITE MUSIC + FITNESS SYSTEM" android:textColor="@color/mint"
                 android:textSize="9sp" android:letterSpacing="0.13"/>
         </LinearLayout>
+        <Button android:id="@+id/refreshSiteBtn"
+            android:layout_width="40dp" android:layout_height="40dp"
+            android:layout_marginEnd="5dp"
+            android:text="↻" android:textSize="22sp" android:textStyle="bold"
+            android:contentDescription="Atualizar treinos e nutrição"
+            android:backgroundTint="@color/surface_alt" android:textColor="@color/mint"
+            android:visibility="gone"/>
         <TextView android:id="@+id/headerBadge" android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:text="OFFLINE AUDIO" android:textSize="9sp" android:textStyle="bold"
             android:padding="9dp" android:background="@drawable/bg_outline" android:textColor="@color/mint"/>
@@ -41,7 +48,7 @@
             android:textSize="10sp" android:textAllCaps="false" android:textStyle="bold"
             android:backgroundTint="@color/surface_alt" android:textColor="@color/white"/>
         <Button android:id="@+id/nutritionTab" android:layout_width="0dp" android:layout_height="match_parent"
-            android:layout_weight="1" android:layout_marginStart="5dp" android:text="◉  MASS COACH"
+            android:layout_weight="1" android:layout_marginStart="5dp" android:text="◉  NUTRIÇÃO"
             android:textSize="9sp" android:textAllCaps="false" android:textStyle="bold"
             android:backgroundTint="@color/surface_alt" android:textColor="@color/white"/>
     </LinearLayout>
