@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="ink">#0A141B</color>
-    <color name="surface">#12232C</color>
-    <color name="surface_alt">#1C343F</color>
-    <color name="line">#345563</color>
-    <color name="mint">#82E1D0</color>
-    <color name="white">#EDF6F7</color>
-    <color name="muted">#A3BEC7</color>
+    <color name="ink">#101313</color>
+    <color name="surface">#191E1F</color>
+    <color name="surface_alt">#242A2B</color>
+    <color name="line">#343E3A</color>
+    <color name="mint">#D9F977</color>
+    <color name="white">#F5FAF5</color>
+    <color name="muted">#AEBBB7</color>
 </resources>

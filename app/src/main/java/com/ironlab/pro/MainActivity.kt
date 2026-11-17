@@ -56,14 +56,14 @@ class MainActivity : ComponentActivity() {
     private var controller: MediaController? = null
     private var webView: WebView? = null
     private var webUploadCallback: android.webkit.ValueCallback<Array<Uri>>? = null
-    private var currentScreen = "music"
+    private var currentScreen = "training"
     private var viewMode = "all"
     private var search = ""
     private val site = "https://ironlab-pro-3r9500.v2.appdeploy.ai/"
-    private val ink = Color.rgb(10, 20, 27)
-    private val mint = Color.rgb(130, 225, 208)
-    private val muted = Color.rgb(163, 190, 199)
-    private val white = Color.rgb(237, 246, 247)
+    private val ink by lazy { ContextCompat.getColor(this, R.color.ink) }
+    private val mint by lazy { ContextCompat.getColor(this, R.color.mint) }
+    private val muted by lazy { ContextCompat.getColor(this, R.color.muted) }
+    private val white by lazy { ContextCompat.getColor(this, R.color.white) }
 
     private val pickSongs = registerForActivityResult(
         ActivityResultContracts.OpenMultipleDocuments()
@@ -128,6 +128,7 @@ class MainActivity : ComponentActivity() {
         binding.musicTab.setOnClickListener { switchScreen("music") }
         binding.trainingTab.setOnClickListener { switchScreen("training") }
         binding.nutritionTab.setOnClickListener { switchScreen("nutrition") }
+        binding.progressTab.setOnClickListener { switchScreen("progress") }
         binding.refreshSiteBtn.setOnClickListener { refreshFitnessSite() }
         binding.headerBadge.setOnClickListener {
             if (currentScreen != "music") openInBrowser() else toast("Player offline • sem anúncios do IRONLAB")
@@ -170,17 +171,13 @@ class MainActivity : ComponentActivity() {
         })
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (currentScreen == "training") {
-                    val browser = webView
-                    if (browser?.canGoBack() == true) browser.goBack()
-                    else switchScreen("music")
-                } else {
-                    // Collapse to the launcher instead of stopping music.
-                    moveTaskToBack(true)
-                }
+                if (currentScreen != "training") switchScreen("training")
+                else if (webView?.canGoBack() == true) webView?.goBack()
+                else moveTaskToBack(true)
             }
         })
         refreshList()
+        switchScreen("training")
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -231,8 +228,14 @@ class MainActivity : ComponentActivity() {
         super.onDestroy()
     }
 
+    private fun fitnessSection(screen: String): String = when (screen) {
+        "nutrition" -> "nutricao"
+        "progress" -> "evolucao"
+        else -> "inicio"
+    }
+
     private fun switchScreen(screen: String) {
-        val previous = currentScreen
+        val hadBrowser = webView != null
         currentScreen = screen
         val music = screen == "music"
         binding.musicPage.visibility = if (music) View.VISIBLE else View.GONE
@@ -240,20 +243,20 @@ class MainActivity : ComponentActivity() {
         val tabs = listOf(
             binding.musicTab to "music",
             binding.trainingTab to "training",
-            binding.nutritionTab to "nutrition"
+            binding.nutritionTab to "nutrition",
+            binding.progressTab to "progress"
         )
         for ((button, name) in tabs) {
             val selected = screen == name
-            button.backgroundTintList = ColorStateList.valueOf(if (selected) mint else Color.rgb(28, 52, 63))
+            button.backgroundTintList = ColorStateList.valueOf(if (selected) mint else ContextCompat.getColor(this, R.color.surface_alt))
             button.setTextColor(if (selected) ink else white)
         }
-        binding.headerBadge.text = if (music) "OFFLINE AUDIO" else "CHROME ↗"
+        binding.headerBadge.text = if (music) "OFFLINE" else "Chrome ↗"
+        binding.playerPanel.visibility = if (music) View.VISIBLE else View.GONE
         binding.refreshSiteBtn.visibility = if (music) View.GONE else View.VISIBLE
         if (!music) {
             ensureWebView()
-            if (previous != screen) {
-                webView?.loadUrl(site + if (screen == "nutrition") "#nutricao" else "#treinos")
-            }
+            if (hadBrowser) webView?.loadUrl(site + "?shell=android#" + fitnessSection(screen))
         }
     }
 
@@ -299,7 +302,7 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun openInBrowser() {
-        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(site + if (currentScreen == "nutrition") "#nutricao" else "#treinos")))
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(site + "#" + fitnessSection(currentScreen))))
     }
 
     /**
@@ -367,8 +370,7 @@ class MainActivity : ComponentActivity() {
         binding.trainingPage.addView(browser, ViewGroup.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
         ))
-        browser.loadUrl(site + if (currentScreen == "nutrition") "#nutricao" else "#treinos")
-        toast("Seus dados salvos no Chrome podem não aparecer no WebView. Use ABRIR CHROME para a sessão original.")
+        browser.loadUrl(site + "?shell=android#" + fitnessSection(currentScreen))
     }
 
     private fun toast(text: String) { Toast.makeText(this, text, Toast.LENGTH_LONG).show() }

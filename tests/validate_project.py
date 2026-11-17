@@ -43,7 +43,8 @@ for token in ['takePersistableUriPermission', 'MediaController.Builder',
               'OpenMultipleDocuments', 'setMediaItems', 'favorites', 'playlists']:
     assert token in activity + library, f'Missing feature {token}'
 assert 'https://ironlab-pro-3r9500.v2.appdeploy.ai/' in activity
-assert 'browser.loadUrl(site + if (currentScreen == "nutrition") "#nutricao" else "#treinos")' in activity
+assert 'browser.loadUrl(site + "?shell=android#" + fitnessSection(currentScreen))' in activity
+assert 'switchScreen("training")' in activity and 'progressTab' in layout and 'progressTab' in activity
 assert 'browser.settings.cacheMode = android.webkit.WebSettings.LOAD_NO_CACHE' in activity
 assert 'private fun refreshFitnessSite()' in activity
 assert 'browser.reload()' in activity
@@ -53,8 +54,8 @@ assert 'SpotifyLinks(this)' in activity
 assert 'spotifyLikedBtn' in layout and 'spotifySaveLinkBtn' in layout
 assert 'spotifySavedLinks' in layout
 assert 'nutritionTab' in activity and 'nutritionTab' in layout
-assert '"#nutricao"' in activity
-assert 'NUTRIÇÃO' in layout
+assert '"nutrition" -> "nutricao"' in activity
+assert 'android:text="Nutrição"' in layout
 assert 'android.intent.action.SEND' in manifest
 spotify_links = (SRC / 'java/com/ironlab/pro/SpotifyLinks.kt').read_text()
 assert 'https://open.spotify.com/collection/tracks' in spotify_links
@@ -77,7 +78,7 @@ assert not missing_ids, f'Missing IDs in activity_main.xml: {sorted(missing_ids)
 
 assert 'media3-session:1.11.1' in gradle and 'media3-exoplayer:1.11.1' in gradle
 assert 'namespace = "com.ironlab.pro"' in gradle
-assert 'versionCode = 6' in gradle and 'versionName = "1.4.1"' in gradle
+assert 'versionCode = 7' in gradle and 'versionName = "1.5.0"' in gradle
 assert 'applicationIdSuffix = ".safe"' in gradle
 assert 'create("safeInstall")' in gradle
 assert 'initWith(getByName("debug"))' in gradle
