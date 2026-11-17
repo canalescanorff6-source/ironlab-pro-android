@@ -10,8 +10,8 @@ android {
         applicationId = "com.ironlab.pro"
         minSdk = 26
         targetSdk = 35
-        versionCode = 5
-        versionName = "1.4.0"
+        versionCode = 6
+        versionName = "1.4.1"
     }
 
     // Optional, stable release signing: provide all four environment variables
@@ -34,7 +34,20 @@ android {
         }
     }
     buildTypes {
+        getByName("debug") {
+            manifestPlaceholders["appLabel"] = "IRONLAB PRO"
+        }
+        // Independent installation for users whose existing beta APK is signed
+        // by a different ephemeral debug key. It DOES NOT overwrite the old app.
+        create("safeInstall") {
+            initWith(getByName("debug"))
+            applicationIdSuffix = ".safe"
+            versionNameSuffix = "-paralelo"
+            manifestPlaceholders["appLabel"] = "IRONLAB PRO (Novo)"
+            matchingFallbacks += listOf("debug")
+        }
         release {
+            manifestPlaceholders["appLabel"] = "IRONLAB PRO"
             if (hasReleaseSigning) {
                 signingConfig = signingConfigs.getByName("ironlabRelease")
             }

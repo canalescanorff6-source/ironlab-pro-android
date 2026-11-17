@@ -1,4 +1,17 @@
-# IRONLAB PRO — Android nativo (versão beta 1.4.0)
+# IRONLAB PRO — Android nativo (beta 1.4.1: instalador verificado)
+
+## Correção de instalação 1.4.1
+
+- Novos builds passam por verificação automática de integridade ZIP, assinatura Android `apksigner`, pacote `aapt` e checksum SHA-256 **antes** de aparecerem como download.
+- São publicados **dois APKs diferentes**, ambos com o mesmo acesso à Nutrição de Precisão e ao plano de 7 dias do site:
+  - `IRONLAB-PRO-Android-1.4.1-debug.apk`: mesmo package name `com.ironlab.pro`. Em caso de assinatura diferente da versão instalada, pode falhar a atualização.
+  - `IRONLAB-PRO-Android-1.4.1-instalacao-paralela.apk`: package name `com.ironlab.pro.safe`, instala **separado** do aplicativo antigo para preservar os registros existentes. Isso não migra dados automaticamente.
+- **A versão paralela é uma solução de teste:** os próximos builds também precisarão de assinatura estável para atualizar em cima dela. Configure as secrets privadas da chave release seguindo `BUILD_APK.md` para a versão definitiva.
+- **Não desinstale a versão antiga sem salvar os dados.** O novo app possui localStorage e biblioteca nativa separados. A versão web pode ser usada diretamente sem APK.
+
+[Baixar versão 1.4.1-beta e validar SHA-256](https://github.com/canalescanorff6-source/ironlab-pro-android/releases/tag/v1.4.1-beta)
+
+## Histórico — 1.4.0
 
 Aplicativo Android em **Kotlin + AndroidX Media3**, com reprodução de arquivos pessoais completos em segundo plano e acesso à versão web atual do IRONLAB PRO.
 
@@ -18,7 +31,7 @@ Aplicativo Android em **Kotlin + AndroidX Media3**, com reprodução de arquivos
 - **Versão gratuita:** a conexão de dados via Spotify Web API foi deliberadamente evitada. As novas regras para apps em desenvolvimento requerem proprietário Premium. Não há download de músicas comerciais nem bloqueio de anúncios de terceiros.
 - **APK beta:** GitHub Actions compila e publica um link de download em `Releases`.
 
-**Download beta:** https://github.com/canalescanorff6-source/ironlab-pro-android/releases/tag/v1.4.0-beta
+**Download beta:** https://github.com/canalescanorff6-source/ironlab-pro-android/releases/tag/v1.4.1-beta
 
 **Atenção às atualizações:** este é um APK `debug`. A assinatura de debug gerada pelo GitHub Actions pode variar entre execuções e impedir instalar por cima de versões anteriores. Não desinstale uma versão que contém dados importantes sem fazer backup. A solução definitiva é configurar os segredos de assinatura privada de release documentados em `BUILD_APK.md`.
 
@@ -37,7 +50,7 @@ Aplicativo Android em **Kotlin + AndroidX Media3**, com reprodução de arquivos
 - Visual dark premium e aba **Meus treinos** abrindo `https://ironlab-pro-3r9500.v2.appdeploy.ai/` em `WebView`.
 - Botão **ABRIR CHROME ↗** na aba Treinos para acessar a sessão original do site no navegador.
 - Pipeline `.github/workflows/build-debug-apk.yml` que roda validação estática, compila APK debug e, se as quatro variáveis secretas estiverem configuradas, também produz **APK release assinado com chave estável** para atualização sem perda de dados.
-- `versionCode = 5` e `versionName = 1.4.0`, preparado para o próximo ciclo de atualização.
+- `versionCode = 6` e `versionName = 1.4.1`, com APK principal e APK paralelo verificados.
 
 ## O que não é possível prometer
 

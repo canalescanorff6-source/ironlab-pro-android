@@ -77,7 +77,16 @@ assert not missing_ids, f'Missing IDs in activity_main.xml: {sorted(missing_ids)
 
 assert 'media3-session:1.11.1' in gradle and 'media3-exoplayer:1.11.1' in gradle
 assert 'namespace = "com.ironlab.pro"' in gradle
-assert 'versionCode = 5' in gradle and 'versionName = "1.4.0"' in gradle
+assert 'versionCode = 6' in gradle and 'versionName = "1.4.1"' in gradle
+assert 'applicationIdSuffix = ".safe"' in gradle
+assert 'create("safeInstall")' in gradle
+assert 'initWith(getByName("debug"))' in gradle
+assert 'android:label="${appLabel}"' in manifest
+assert ':app:assembleSafeInstall' in workflow
+assert 'apksigner" verify --verbose --print-certs' in workflow
+assert '"$TOOLS/aapt" dump badging' in workflow
+assert 'unzip -t "$apk"' in workflow
+assert 'SHA256SUMS.txt' in workflow
 assert 'IRONLAB_KEYSTORE_FILE' in gradle and 'ironlabRelease' in gradle
 assert 'gradle --no-daemon :app:assembleDebug' in workflow
 assert 'gradle --no-daemon :app:assembleRelease' in workflow

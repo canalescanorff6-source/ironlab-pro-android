@@ -1,11 +1,11 @@
-# Gerar o APK do IRONLAB PRO Android 1.4.0
+# Gerar o APK do IRONLAB PRO Android 1.4.1
 
 ## Etapa 1 — GitHub Actions (sem instalar Android Studio)
 
 1. No GitHub, utilize o repositório vazio chamado `ironlab-pro-android` na sua conta. Mantenha-o separado dos demais projetos.
 2. Descompacte o repositório `ironlab-pro-android` e coloque **todo o conteúdo da pasta** na raiz desse repositório, incluindo `.github/workflows/build-debug-apk.yml` (a pasta `.github` é oculta).
 3. Na aba **Actions** do GitHub, abra **IRONLAB Android - Compilar APK**; execute manualmente em `Run workflow` caso não inicie no envio.
-4. Verifique que a execução chegou ao estado verde. Em **Artifacts**, baixe `IRONLAB-PRO-1.4.0-debug-APK` e extraia o arquivo `app-debug.apk`.
+4. Verifique que a execução chegou ao estado verde. Em **Artifacts**, baixe `IRONLAB-PRO-1.4.1-debug-APK` e extraia o arquivo `app-debug.apk`.
 5. No celular Android, abra o APK e autorize a instalação somente para o gerenciador de arquivos utilizado.
 6. Importe as músicas que você possui legalmente, pressione Play e teste os controles com o celular bloqueado e com um fone Bluetooth. A música está em `MediaSessionService`, separado da aba de treinos.
 
@@ -28,7 +28,7 @@ No seu repositório GitHub privado, abra `Settings → Secrets and variables →
 - `IRONLAB_KEY_ALIAS`: alias usado na geração (`ironlab`).
 - `IRONLAB_KEY_PASSWORD`: senha da chave (pode ser diferente da senha do keystore).
 
-Execute o mesmo workflow. Quando todos os secrets estiverem definidos, ele produz também o artifact **IRONLAB-PRO-1.4.0-release-signed-APK** contendo `app-release.apk`.
+Execute o mesmo workflow. Quando todos os secrets estiverem definidos, ele produz também o artifact **IRONLAB-PRO-1.4.1-release-signed-APK** contendo `app-release.apk`.
 
 Para atualizações futuras sem perder dados: **use sempre a mesma chave**, mantenha `applicationId` e aumente `versionCode`. Um APK release não pode atualizar uma instalação debug assinada com outra chave; escolha a linha release desde a primeira instalação que pretende manter.
 
@@ -50,4 +50,14 @@ Na aba **Treinos**, o APK usa `https://ironlab-pro-3r9500.v2.appdeploy.ai/#trein
 
 ## Versão beta v1.4.0
 
-O pipeline da branch `main` gera um APK de debug em [GitHub Releases](https://github.com/canalescanorff6-source/ironlab-pro-android/releases/tag/v1.4.0-beta) após compilação bem-sucedida. A assinatura de debug pode impedir atualização por cima de um APK anterior; **não desinstale antes de fazer backup**. A linha release assinada com chave fixa requer os quatro secrets privados documentados acima.
+O pipeline da branch `main` gera um APK de debug em [GitHub Releases](https://github.com/canalescanorff6-source/ironlab-pro-android/releases/tag/v1.4.1-beta) após compilação bem-sucedida. A assinatura de debug pode impedir atualização por cima de um APK anterior; **não desinstale antes de fazer backup**. A linha release assinada com chave fixa requer os quatro secrets privados documentados acima.
+
+
+## Quando o Android informa "pacote quebrado" ou não instala
+
+1. Baixe o arquivo **.apk** diretamente pelo navegador (não "Source code .zip" nem um artifact .zip).
+2. Confira o tamanho do arquivo e o checksum SHA-256 disponível na release.
+3. Se houver conflito de assinatura com a versão antiga, **não desinstale**. Experimente o pacote **IRONLAB-PRO-Android-1.4.1-instalacao-paralela.apk**; o app novo terá ID `com.ironlab.pro.safe` e será instalado lado a lado, com armazenamento independente.
+4. Após instalar, na aba Nutrição, toque em atualizar e ative o perfil. O planejamento será carregado do site.
+5. O workflow valida a integridade ZIP, a assinatura com `apksigner` e a declaração de pacotes via `aapt` antes de publicar. Isso não é teste num aparelho físico.
+6. A assinatura debug temporária também impede atualização direta futura. **Configure chave de assinatura release privada estável para o app definitivo**, preservando sempre sua senha e o arquivo de chave; não compartilhe nos chats nem no repositório.
