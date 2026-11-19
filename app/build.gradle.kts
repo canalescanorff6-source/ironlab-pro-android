@@ -10,8 +10,8 @@ android {
         applicationId = "com.ironlab.pro"
         minSdk = 26
         targetSdk = 35
-        versionCode = 7
-        versionName = "1.5.0"
+        versionCode = 8
+        versionName = "1.6.0"
     }
 
     // Optional, stable release signing: provide all four environment variables
@@ -41,9 +41,9 @@ android {
         // by a different ephemeral debug key. It DOES NOT overwrite the old app.
         create("safeInstall") {
             initWith(getByName("debug"))
-            applicationIdSuffix = ".safe"
+            applicationIdSuffix = ".safe.v16"
             versionNameSuffix = "-paralelo"
-            manifestPlaceholders["appLabel"] = "IRONLAB PRO (Novo)"
+            manifestPlaceholders["appLabel"] = "IRONLAB PRO 1.6"
             matchingFallbacks += listOf("debug")
         }
         release {

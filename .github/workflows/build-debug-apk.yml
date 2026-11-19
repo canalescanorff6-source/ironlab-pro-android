@@ -18,6 +18,8 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
+      - name: Incluir a versao publicada do treino no APK
+        run: python3 scripts/bundle_fitness_site.py
       - name: Validar projeto Android
         run: python3 tests/validate_project.py
       # GitHub ubuntu-latest already includes Android command-line tools.
@@ -58,13 +60,13 @@ jobs:
             sha256sum "$apk"
           done
           "$TOOLS/aapt" dump badging "$STANDARD" | grep -F "package: name='com.ironlab.pro'"
-          "$TOOLS/aapt" dump badging "$SAFE" | grep -F "package: name='com.ironlab.pro.safe'"
+          "$TOOLS/aapt" dump badging "$SAFE" | grep -F "package: name='com.ironlab.pro.safe.v16'"
           echo "Estruturas ZIP, pacotes e assinaturas validados."
 
       - name: Publicar APK debug como artifact
         uses: actions/upload-artifact@v4
         with:
-          name: IRONLAB-PRO-1.5.0-debug-APK
+          name: IRONLAB-PRO-1.6.0-debug-APK
           path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
           retention-days: 30
@@ -72,7 +74,7 @@ jobs:
       - name: Publicar APK independente como artifact
         uses: actions/upload-artifact@v4
         with:
-          name: IRONLAB-PRO-1.5.0-instalacao-paralela
+          name: IRONLAB-PRO-1.6.0-instalacao-paralela
           path: app/build/outputs/apk/safeInstall/app-safeInstall.apk
           if-no-files-found: error
           retention-days: 30
@@ -83,9 +85,9 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          TAG="v1.5.0-beta"
-          APK="$RUNNER_TEMP/IRONLAB-PRO-Android-1.5.0-debug.apk"
-          SAFE="$RUNNER_TEMP/IRONLAB-PRO-Android-1.5.0-instalacao-paralela.apk"
+          TAG="v1.6.0-beta"
+          APK="$RUNNER_TEMP/IRONLAB-PRO-Android-1.6.0-debug.apk"
+          SAFE="$RUNNER_TEMP/IRONLAB-PRO-Android-1.6.0-instalacao-paralela.apk"
           HASHES="$RUNNER_TEMP/SHA256SUMS.txt"
           cp app/build/outputs/apk/debug/app-debug.apk "$APK"
           cp app/build/outputs/apk/safeInstall/app-safeInstall.apk "$SAFE"
@@ -94,8 +96,8 @@ jobs:
             gh release upload "$TAG" "$APK" "$SAFE" "$HASHES" --clobber
           else
             gh release create "$TAG" "$APK" "$SAFE" "$HASHES" \
-              --title "IRONLAB PRO Android 1.5.0 (novo visual e navegação)" \
-              --notes "Os APKs passaram por validação ZIP, apksigner e aapt. Caso a versão debug normal não instale sobre seu aplicativo anterior (assinatura diferente), instale IRONLAB-PRO-Android-1.5.0-instalacao-paralela.apk, pacote independente com.ironlab.pro.safe, sem desinstalar a versão anterior. Os dados não são migrados ou sincronizados automaticamente entre as instalações. Treinos, nutrição e evolução carregam o site atualizado; não remova o app anterior sem backup." \
+              --title "IRONLAB PRO Android 1.6.0 (hipertrofia terça a sexta e uso offline)" \
+              --notes "Plano de terça a sexta com prioridade superior, 3–4 séries, ajustes de carga conforme desempenho, histórico, backup e sincronização por código. Inclui uma cópia do site publicado para abrir treinos sem internet. Vídeos, rádio e sincronização usam internet. O APK independente usa com.ironlab.pro.safe.v16 e instala ao lado de versões anteriores. Transfira os registros por Evolução > Backup e restauração. A assinatura desta linha beta pode impedir atualização sobre versões antigas; mantenha a instalação anterior até restaurar seus dados. Pacote verificado por ZIP, apksigner e aapt; o teste no aparelho físico continua pendente." \
               --prerelease
           fi
 
@@ -126,7 +128,7 @@ jobs:
         if: steps.signing.outputs.enabled == 'true'
         uses: actions/upload-artifact@v4
         with:
-          name: IRONLAB-PRO-1.5.0-release-signed-APK
+          name: IRONLAB-PRO-1.6.0-release-signed-APK
           path: app/build/outputs/apk/release/app-release.apk
           if-no-files-found: error
           retention-days: 30

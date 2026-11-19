@@ -15,6 +15,8 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebChromeClient
+import android.webkit.WebResourceError
+import android.webkit.WebResourceResponse
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -55,6 +57,8 @@ class MainActivity : ComponentActivity() {
     private var controllerFuture: ListenableFuture<MediaController>? = null
     private var controller: MediaController? = null
     private var webView: WebView? = null
+    private val offlineFitness by lazy { OfflineFitnessSite(this) }
+    private var offlineDisplayed = false
     private var webUploadCallback: android.webkit.ValueCallback<Array<Uri>>? = null
     private var currentScreen = "training"
     private var viewMode = "all"
@@ -316,6 +320,9 @@ class MainActivity : ComponentActivity() {
         val browser = webView
         if (browser == null) {
             ensureWebView()
+        } else if (offlineDisplayed) {
+            offlineDisplayed = false
+            browser.loadUrl(site + "?shell=android#" + fitnessSection(currentScreen))
         } else {
             browser.reload()
         }
@@ -337,6 +344,33 @@ class MainActivity : ComponentActivity() {
         browser.settings.mixedContentMode = android.webkit.WebSettings.MIXED_CONTENT_NEVER_ALLOW
         browser.settings.setSupportMultipleWindows(false)
         browser.webViewClient = object : WebViewClient() {
+            override fun shouldInterceptRequest(view: WebView?, request: WebResourceRequest?): WebResourceResponse? {
+                if (request?.method != "GET") return null
+                return offlineFitness.resource(request.url.toString())
+            }
+
+            override fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?) {
+                if (view == null || request?.isForMainFrame != true) return
+                val url = request.url
+                val networkFailure = error?.errorCode in setOf(ERROR_HOST_LOOKUP, ERROR_CONNECT, ERROR_TIMEOUT, ERROR_IO)
+                if (networkFailure && url.scheme == "https" && url.host == "ironlab-pro-3r9500.v2.appdeploy.ai" && url.path == "/") {
+                    offlineDisplayed = true
+                    offlineFitness.show(view, site + "?shell=android#" + fitnessSection(currentScreen))
+                    toast("Modo offline: treino e registros disponíveis. Sincronize quando a internet voltar.")
+                }
+            }
+
+            override fun onReceivedHttpError(view: WebView?, request: WebResourceRequest?, response: WebResourceResponse?) {
+                if (view == null || request?.isForMainFrame != true) return
+                val url = request.url
+                if (response != null && response.statusCode >= 500 && url.scheme == "https" &&
+                    url.host == "ironlab-pro-3r9500.v2.appdeploy.ai" && url.path == "/") {
+                    offlineDisplayed = true
+                    offlineFitness.show(view, site + "?shell=android#" + fitnessSection(currentScreen))
+                    toast("Servidor indisponível. Seu treino continua na versão incluída no aplicativo.")
+                }
+            }
+
             override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
                 val url = request?.url ?: return true
                 if (url.scheme == "https" && url.host == "ironlab-pro-3r9500.v2.appdeploy.ai") return false

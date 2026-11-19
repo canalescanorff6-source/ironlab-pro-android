@@ -1,3 +1,30 @@
+# IRONLAB PRO Android 1.6.0
+
+A versão 1.6.0 inclui o treino publicado de terça a sexta no APK, com prioridade
+em superiores, 3–4 séries, sugestões de carga baseadas nos registros, diário,
+backup e vínculo entre aparelhos por código. O app tenta abrir a versão online;
+se a rede ou o servidor falhar, abre a cópia incluída na compilação. As sessões
+continuam salvas na mesma origem HTTPS do site no WebView.
+
+A biblioteca musical permanece nativa com Media3. Vídeos, rádio e sincronização
+precisam de internet. Para recuperar os dados de outra instalação, use
+Evolução → Backup e restauração, por arquivo ou texto.
+
+O APK independente 1.6.0 usa `com.ironlab.pro.safe.v16` e pode ser instalado ao lado
+das versões beta anteriores. O identificador foi separado porque as chaves debug
+das execuções anteriores não estão disponíveis para assinar uma atualização direta.
+A assinatura release permanente ainda depende das quatro secrets descritas em
+`BUILD_APK.md`. Não remova a instalação anterior antes de transferir seus dados.
+
+O build confere a versão do site, inclui HTML, JavaScript, CSS e a dependência Axios,
+confere os checksums, compila e valida ZIP, assinatura e pacote antes de publicar.
+Os arquivos de áudio pessoais continuam na instalação onde foram importados.
+O teste no aparelho físico permanece pendente.
+
+[Downloads da versão 1.6.0](https://github.com/canalescanorff6-source/ironlab-pro-android/releases/tag/v1.6.0-beta)
+
+---
+
 # IRONLAB PRO — Android nativo (beta 1.4.1: instalador verificado)
 
 ## Correção de instalação 1.4.1

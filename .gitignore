@@ -8,3 +8,6 @@ build/
 *.apk
 *.aab
 captures/
+
+# Build-owned copy of the published fitness site
+/app/src/main/assets/offline/

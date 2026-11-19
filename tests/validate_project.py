@@ -78,8 +78,8 @@ assert not missing_ids, f'Missing IDs in activity_main.xml: {sorted(missing_ids)
 
 assert 'media3-session:1.11.1' in gradle and 'media3-exoplayer:1.11.1' in gradle
 assert 'namespace = "com.ironlab.pro"' in gradle
-assert 'versionCode = 7' in gradle and 'versionName = "1.5.0"' in gradle
-assert 'applicationIdSuffix = ".safe"' in gradle
+assert 'versionCode = 8' in gradle and 'versionName = "1.6.0"' in gradle
+assert 'applicationIdSuffix = ".safe.v16"' in gradle
 assert 'create("safeInstall")' in gradle
 assert 'initWith(getByName("debug"))' in gradle
 assert 'android:label="${appLabel}"' in manifest
@@ -105,3 +105,21 @@ print(f'PASS: parsed {len(XMLS)} XML files and matched {len(binding_names)} view
 print('PASS: Media3 service/foreground and screen-off wake-lock configuration.')
 print('PASS: local media permissions, authorized search links and Gradle workflows.')
 print('NOTE: Android SDK not installed; Kotlin compilation and screen-off playback require separate testing.')
+
+# The downloadable APK must contain the reviewed site snapshot and offline loader.
+import hashlib
+import json
+assets = SRC / 'assets/offline'
+index = (assets / 'index.html').read_text()
+packaged = json.loads((assets / 'manifest.json').read_text())
+assert packaged['version'] == '1795033123887'
+assert packaged['version'] in index
+assert packaged['resources']
+for name, expected in packaged['sha256'].items():
+    assert hashlib.sha256((assets / name).read_bytes()).hexdigest() == expected
+assert 'OfflineFitnessSite(this)' in activity
+assert 'shouldInterceptRequest' in activity
+assert 'offlineFitness.show(view' in activity
+assert 'ERROR_HOST_LOOKUP' in activity
+assert 'scripts/bundle_fitness_site.py' in workflow
+print('PASS: reviewed fitness snapshot, bundled resource checksums and Android offline fallback.')
