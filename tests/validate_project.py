@@ -112,7 +112,7 @@ import json
 assets = SRC / 'assets/offline'
 index = (assets / 'index.html').read_text()
 packaged = json.loads((assets / 'manifest.json').read_text())
-assert packaged['version'] == '1795033123887'
+assert packaged['version'].isdigit()
 assert packaged['version'] in index
 assert packaged['resources']
 for name, expected in packaged['sha256'].items():

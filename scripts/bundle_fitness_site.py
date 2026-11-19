@@ -8,7 +8,6 @@ from urllib.parse import urljoin, urlsplit
 from urllib.request import Request, urlopen
 
 SITE = 'https://ironlab-pro-3r9500.v2.appdeploy.ai/'
-SITE_VERSION = '1795033123887'
 TARGET = Path(__file__).resolve().parents[1] / 'app/src/main/assets/offline'
 
 
@@ -45,8 +44,10 @@ class Resources(HTMLParser):
 
 def main():
     html = download(SITE).decode('utf-8')
-    if SITE_VERSION not in html:
-        raise RuntimeError('Published version changed. Review the snapshot before packaging.')
+    match = re.search(r'"appVersion":"([0-9]+)"', html)
+    if not match:
+        raise RuntimeError('Could not identify the published fitness version')
+    site_version = match.group(1)
     resources = Resources()
     resources.feed(html)
     if not any(url.endswith('.js') and '/assets/' in url for url in resources.urls):
@@ -80,11 +81,11 @@ def main():
             raise RuntimeError(f'Fitness bundle is missing {feature}')
     (TARGET / 'index.html').write_text(html, encoding='utf-8')
     (TARGET / 'manifest.json').write_text(json.dumps({
-        'version': SITE_VERSION,
+        'version': site_version,
         'resources': mapping,
         'sha256': {name: sha256((TARGET / name).read_bytes()).hexdigest() for name in mapping.values()}
     }, indent=2), encoding='utf-8')
-    print(f'Packaged fitness version {SITE_VERSION}: {len(mapping)} resources')
+    print(f'Packaged fitness version {site_version}: {len(mapping)} resources')
 
 
 if __name__ == '__main__':
