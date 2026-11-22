@@ -130,6 +130,7 @@ class MainActivity : ComponentActivity() {
         refreshSpotifyLinks()
         spotifyLinks.receiveShared(intent, ::refreshSpotifyLinks)
         binding.musicTab.setOnClickListener { switchScreen("music") }
+        binding.seriesTab.setOnClickListener { showSeriesPlan() }
         binding.trainingTab.setOnClickListener { switchScreen("training") }
         binding.nutritionTab.setOnClickListener { switchScreen("nutrition") }
         binding.progressTab.setOnClickListener { switchScreen("progress") }
@@ -236,6 +237,24 @@ class MainActivity : ComponentActivity() {
         "nutrition" -> "nutricao"
         "progress" -> "evolucao"
         else -> "inicio"
+    }
+
+    private fun showSeriesPlan() {
+        val page = WebView(this).apply {
+            settings.javaScriptEnabled = true
+            settings.domStorageEnabled = true
+            settings.allowFileAccess = false
+            settings.allowContentAccess = false
+        }
+        val html = assets.open("series.html").bufferedReader().use { it.readText() }
+        page.loadDataWithBaseURL("https://series.ironlab.invalid/", html, "text/html", "UTF-8", null)
+        val dialog = AlertDialog.Builder(this)
+            .setView(page)
+            .setPositiveButton("Voltar ao IRONLAB", null)
+            .create()
+        dialog.setOnDismissListener { page.destroy() }
+        dialog.show()
+        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
     }
 
     private fun switchScreen(screen: String) {

@@ -78,8 +78,8 @@ assert not missing_ids, f'Missing IDs in activity_main.xml: {sorted(missing_ids)
 
 assert 'media3-session:1.11.1' in gradle and 'media3-exoplayer:1.11.1' in gradle
 assert 'namespace = "com.ironlab.pro"' in gradle
-assert 'versionCode = 8' in gradle and 'versionName = "1.6.0"' in gradle
-assert 'applicationIdSuffix = ".safe.v16"' in gradle
+assert 'versionCode = 9' in gradle and 'versionName = "1.7.0"' in gradle
+assert 'applicationIdSuffix = ".safe.v17"' in gradle
 assert 'create("safeInstall")' in gradle
 assert 'initWith(getByName("debug"))' in gradle
 assert 'android:label="${appLabel}"' in manifest

@@ -167,6 +167,7 @@
         android:orientation="horizontal">
         <Button android:id="@+id/trainingTab" style="@style/IronlabTab"
             android:text="Treino" android:contentDescription="Início e treinos"/>
+        <Button android:id="@+id/seriesTab" style="@style/IronlabTab" android:text="Séries" android:contentDescription="Ficha por série e cronômetro"/>
         <Button android:id="@+id/nutritionTab" style="@style/IronlabTab" android:text="Nutrição"/>
         <Button android:id="@+id/progressTab" style="@style/IronlabTab" android:text="Evolução"/>
         <Button android:id="@+id/musicTab" style="@style/IronlabTab" android:text="Músicas"/>
